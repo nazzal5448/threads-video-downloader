@@ -17,6 +17,7 @@ async def extract_url(url):
             try:
                 await page.goto(url, wait_until="load", timeout=120000)
                 await page.wait_for_selector("#barcelona-splash-screen", state="hidden", timeout=15000)
+                await page.click("div.x1ey2m1c.x9f619.xds687c", timeout=90000)
                 await page.mouse.click(30, 35, button="left")
                 await page.click("body", timeout=0)
                 await page.click("div.x1ey2m1c.x9f619.xds687c.x17qophe.x10l6tqk.x13vifvy.x1ypdohk")
