@@ -1,33 +1,41 @@
-# Use the official Python 3.12 slim image
-FROM python:3.12-slim
+# Stage 1: Base image with Python 3.12 slim
+FROM python:3.12-slim AS base
 
-# Install system dependencies for Playwright
-RUN apt-get update && apt-get install -y \
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    DEBIAN_FRONTEND=noninteractive
+
+# Install OS dependencies required for Firefox
+RUN apt-get update && apt-get install -y --no-install-recommends \
     wget curl gnupg ca-certificates \
-    fonts-liberation libappindicator3-1 libasound2 \
-    libatk-bridge2.0-0 libatk1.0-0 libcups2 libdbus-1-3 \
-    libgdk-pixbuf2.0-0 libnspr4 libnss3 libx11-xcb1 libxcomposite1 \
-    libxdamage1 libxrandr2 xdg-utils libgbm-dev libxshmfence1 \
-    libxss1 libgtk-3-0 libdrm2 --no-install-recommends \
+    libgtk-3-0 libdbus-glib-1-2 libasound2 libxshmfence1 libxss1 libnss3 \
+    fonts-liberation libatk-bridge2.0-0 libatk1.0-0 libcups2 libxcomposite1 \
+    libxrandr2 libxdamage1 libx11-xcb1 libgbm-dev xdg-utils libdrm2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Playwright and its browsers
-RUN pip install --upgrade pip \
-    && pip install playwright \
-    && playwright install --with-deps
+# Upgrade pip and install Python dependencies
+RUN pip install --upgrade pip && pip install playwright && playwright install firefox
 
-# Set working directory
+# Create and set work directory
 WORKDIR /app
 
-# Copy requirements and install dependencies
+# Copy requirements first to leverage Docker cache
 COPY requirements.txt .
+
+# Install Python requirements
 RUN pip install -r requirements.txt
 
-# Copy app code
+# Copy project files
 COPY . .
 
-# Expose port for FastAPI
+# Expose port used by Uvicorn
 EXPOSE 8000
 
-# Run the FastAPI app
+# Use a non-root user for better security (optional)
+# RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
+# USER appuser
+
+# Run the FastAPI application with Uvicorn
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
