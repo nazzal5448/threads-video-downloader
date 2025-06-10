@@ -28,7 +28,7 @@ def is_bot(user_agent: Optional[str]) -> bool:
     bot_keywords = ["bot", "crawl", "spider", "scrapy", "wget", "curl"]
     return any(bot in (user_agent or "").lower() for bot in bot_keywords)
 @app.get("/")
-async def home():
+def home():
     return {
         "message": "The App is running!"
     }
