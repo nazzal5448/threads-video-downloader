@@ -11,12 +11,27 @@ async def extract_url(url):
     try:
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True, args=[
-                        '--no-sandbox',
-                        '--disable-setuid-sandbox',
-                        '--disable-dev-shm-usage',
-                        '--disable-accelerated-2d-canvas',
-                        '--no-zygote',
-                        '--single-process'])
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--disable-accelerated-2d-canvas",
+                "--no-zygote",
+                "--disable-dev-tools",
+                "--disable-extensions",
+                "--disable-breakpad",
+                "--enable-unsafe-swiftshader", 
+                "--disable-software-rasterizer",
+                "--disable-background-networking",
+                "--disable-default-apps",
+                "--disable-sync",
+                "--metrics-recording-only",
+                "--mute-audio",
+                "--no-first-run",
+                "--safebrowsing-disable-auto-update",
+                "--font-config-crash"
+            ]
+)
             
             context = await browser.new_context(
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
@@ -30,7 +45,7 @@ async def extract_url(url):
                 await page.goto(url, wait_until="load", timeout=120000)
                 logger.info("App has started.")
                 logger.info("Accessing link now!!")
-                await page.wait_for_selector("div.x1lliihq.x5yr21d.x1n2onr6.xh8yej3.x1ja2u2z video.x1lliihq.x5yr21d.xh8yej3", timeout=12000)
+                await page.wait_for_selector("div.x1lliihq.x5yr21d.x1n2onr6.xh8yej3.x1ja2u2z video.x1lliihq.x5yr21d.xh8yej3", timeout=120000)
                 html = await page.inner_html("body")
             except Exception as e:
                 print(f"[!] Page interaction error: {e}")
