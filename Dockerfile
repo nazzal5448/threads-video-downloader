@@ -6,7 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     DEBIAN_FRONTEND=noninteractive \
-    DEBUG="pw:browser*"
+    DEBUG="pw:browser*" \
+    PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright
 
 # Install OS dependencies required for Playwright Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -16,6 +17,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xdg-utils libdrm2 libxshmfence1 libnss3 libxss1 libasound2 \
     libxcomposite1 libxcursor1 libxi6 libxtst6 libgl1 libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
+
+# Create the playwright browser path directory with correct permissions
+RUN mkdir -p /tmp/playwright && chmod -R 777 /tmp/playwright
 
 # Upgrade pip and install Python dependencies
 RUN pip install --upgrade pip && \
