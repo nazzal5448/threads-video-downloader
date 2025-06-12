@@ -24,7 +24,8 @@ RUN mkdir -p /tmp/playwright && chmod -R 777 /tmp/playwright
 # Upgrade pip and install Python dependencies
 RUN pip install --upgrade pip && \
     pip install playwright && \
-    PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright playwright install --with-deps chromium
+    PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright playwright install --with-deps chromium && \
+    find /tmp/playwright
 
 # Set working directory
 WORKDIR /app
