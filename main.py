@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 async def extract_url(url):
     try:
         async with async_playwright() as p:
-            browser = await p.firefox.launch(headless=True, args=[
+            browser = await p.chromium.launch(headless=False, args=[
                         '--no-sandbox',
                         '--disable-setuid-sandbox',
                         '--disable-dev-shm-usage',
