@@ -2,10 +2,12 @@ import asyncio
 from playwright.async_api import async_playwright
 from selectolax.parser import HTMLParser
 import logging
+import os
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/tmp/playwright"
 
 async def extract_url(url):
     try:
