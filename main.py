@@ -11,28 +11,7 @@ logger = logging.getLogger(__name__)
 async def extract_url(url):
     try:
         async with async_playwright() as p:
-            browser = await p.firefox.launch(headless=True, args=[
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-accelerated-2d-canvas",
-                "--no-zygote",
-                "--disable-dev-tools",
-                "--disable-extensions",
-                "--disable-breakpad",
-                "--enable-unsafe-swiftshader", 
-                "--disable-software-rasterizer",
-                "--disable-background-networking",
-                "--disable-default-apps",
-                "--disable-sync",
-                "--metrics-recording-only",
-                "--mute-audio",
-                "--no-first-run",
-                "--safebrowsing-disable-auto-update",
-                "--font-config-crash"
-            ]
-)
+            browser = await p.firefox.launch(headless=True, args=["--no-sandbox"])
             
             context = await browser.new_context(
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
