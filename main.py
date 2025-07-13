@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 async def extract_url(url):
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True, args=["--no-sandbox"])
+            browser = await p.chromium.launch(headless=True)
             
             context = await browser.new_context(
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
