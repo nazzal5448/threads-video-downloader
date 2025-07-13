@@ -10,7 +10,7 @@ from main import extract_url
 app = FastAPI()
 
 # ALLOWING SELECTED DOMAINS
-ALLOWED_ORIGINS = ["threadsvideodownloader.org"]
+ALLOWED_ORIGINS = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
